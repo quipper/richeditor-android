@@ -25,6 +25,7 @@ def getArtificatId = { ->
   return "richeditor" // Replace with library name ID
 }
 
+// https://proandroiddev.com/publishing-android-libraries-to-the-github-package-registry-part-1-7997be54ea5a
 publishing {
   publications {
     bar(MavenPublication) {
