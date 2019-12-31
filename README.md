@@ -1,8 +1,26 @@
 RichEditor for Android
 =============
+### Modifications made by user @kishannareshpal:
+```
+    - Custom default font (jost.ttf) 
+        To override it for a font of your own, do as follow:
+            a. Create the /assets folder on your app package if you haven't already;
+            b. Create a subfolder named "fonts" inside your /assets directory.
+            c. Place your custom font .ttf file inside the fonts directory.
+            d. Make sure that the font file is named: "refont.ttf"
+            e. Enjoy!
+        
+    - Migrated to AndroidX
+    
+    - Upgrade of Android Gradle.
+    
+    - Using Github Packages
+```
+
+
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-richeditor--android-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1696)
 [![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Download](https://api.bintray.com/packages/wasabeef/maven/richeditor-android/images/download.svg)](https://bintray.com/wasabeef/maven/richeditor-android/_latestVersion)
+[![Download](https://api.bintray.com/packages/wasabeef/maven/richeditor-android/images/download.svg)](https://bintray.com/wasabeef/maven/richeditor-android/_latestVersion) 
 
 `RichEditor for Android` is a beautiful Rich Text `WYSIWYG Editor` for `Android`.
 
@@ -78,7 +96,10 @@ repositories {
 }
 
 dependencies {
-    compile 'jp.wasabeef:richeditor-android:1.2.2'
+    implementation 'jp.wasabeef:richeditor-android:1.2.2'
+    
+    // or use (for kishan's edit, and upgrades listed on top of this readme file.)
+    implementation 'com.kishannareshpal:richeditor:1.2.3'
 }
 ```
 ### Default Setting for Editor

@@ -101,7 +101,6 @@ public class RichEditor extends WebView {
     setWebChromeClient(new WebChromeClient());
     setWebViewClient(createWebviewClient());
     loadUrl(SETUP_HTML);
-
     applyAttributes(context, attrs);
   }
 
