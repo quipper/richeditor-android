@@ -13,45 +13,52 @@ android {
   }
 }
 
-def githubProperties = new Properties()
-githubProperties.load(new FileInputStream(rootProject.file("github.properties"))) //Set env variable GPR_USER & GPR_API_KEY if not adding a properties file
 
+///
+//
+// Commented because im using Jitpack now, instead of Github Packages, because, as of now, Github
+// packages needs you to authenticate and do whatever other stuff to implement libraries published
+// there on any project.
 
-def getVersionName = { ->
-  return "1.2.3" // Replace with version Name
-}
-
-def getArtificatId = { ->
-  return "richeditor" // Replace with library name ID
-}
-
-// https://proandroiddev.com/publishing-android-libraries-to-the-github-package-registry-part-1-7997be54ea5a
-publishing {
-  publications {
-    bar(MavenPublication) {
-      groupId 'com.kishannareshpal' // Replace with group ID
-      artifactId getArtificatId()
-      version getVersionName()
-      artifact("$buildDir/outputs/aar/${getArtificatId()}-release.aar")
-    }
-  }
-
-  repositories {
-    maven {
-      name = "GitHubPackages"
-      /** Configure path of your package repository on Github
-       ** Replace GITHUB_USERID with your/organisation Github userID
-       ** and REPOSITORY with the repository name on GitHub
-       */
-      url = uri("https://maven.pkg.github.com/kishannareshpal/richeditor-android")
-      credentials {
-        /** Create github.properties in root project folder file with
-         ** gpr.usr=GITHUB_USER_ID & gpr.key=PERSONAL_ACCESS_TOKEN
-         ** Set env variable GPR_USER & GPR_API_KEY if not adding a properties file**/
-
-        username = githubProperties['gpr.usr'] ?: System.getenv("GPR_USER")
-        password = githubProperties['gpr.key'] ?: System.getenv("GPR_API_KEY")
-      }
-    }
-  }
-}
+//def githubProperties = new Properties()
+//githubProperties.load(new FileInputStream(rootProject.file("github.properties"))) //Set env variable GPR_USER & GPR_API_KEY if not adding a properties file
+//
+//
+//def getVersionName = { ->
+//  return "1.2.3" // Replace with version Name
+//}
+//
+//def getArtificatId = { ->
+//  return "richeditor" // Replace with library name ID
+//}
+//
+//// https://proandroiddev.com/publishing-android-libraries-to-the-github-package-registry-part-1-7997be54ea5a
+//publishing {
+//  publications {
+//    bar(MavenPublication) {
+//      groupId 'com.kishannareshpal' // Replace with group ID
+//      artifactId getArtificatId()
+//      version getVersionName()
+//      artifact("$buildDir/outputs/aar/${getArtificatId()}-release.aar")
+//    }
+//  }
+//
+//  repositories {
+//    maven {
+//      name = "GitHubPackages"
+//      /** Configure path of your package repository on Github
+//       ** Replace GITHUB_USERID with your/organisation Github userID
+//       ** and REPOSITORY with the repository name on GitHub
+//       */
+//      url = uri("https://maven.pkg.github.com/kishannareshpal/richeditor-android")
+//      credentials {
+//        /** Create github.properties in root project folder file with
+//         ** gpr.usr=GITHUB_USER_ID & gpr.key=PERSONAL_ACCESS_TOKEN
+//         ** Set env variable GPR_USER & GPR_API_KEY if not adding a properties file**/
+//
+//        username = githubProperties['gpr.usr'] ?: System.getenv("GPR_USER")
+//        password = githubProperties['gpr.key'] ?: System.getenv("GPR_API_KEY")
+//      }
+//    }
+//  }
+//}
