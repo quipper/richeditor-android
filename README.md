@@ -93,13 +93,16 @@ How do I use it?
 ```groovy
 repositories {
     jcenter()
+    // maven { url 'https://jitpack.io' } // uncomment this if you are using kishan's build.
 }
 
 dependencies {
     implementation 'jp.wasabeef:richeditor-android:1.2.2'
     
     // or use (for kishan's edit, and upgrades listed on top of this readme file.)
-    implementation 'com.kishannareshpal:richeditor:1.2.3'
+    implementation 'com.github.kishannareshpal:richeditor-android:1.2.3'
+    // don't forget to add jitpack repo by uncommenting above.  
+
 }
 ```
 ### Default Setting for Editor
