@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven-publish' // Apply this plugin at the top of your library build.gradle
+apply plugin: 'com.github.dcendents.android-maven'
+group 'com.github.kishannareshpal'
 
 android {
   compileSdkVersion 29
