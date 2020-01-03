@@ -90,6 +90,18 @@ public class RichEditor extends WebView {
       if (isSubscript)     enabledMap.put("isSubscript", isSubscript);
       return enabledMap;
     }
+
+    public HashMap<String, Boolean> getAllTypes() {
+      HashMap<String, Boolean> enabledMap = new HashMap<>();
+      enabledMap.put("isBold", isBold);
+      enabledMap.put("isItalic", isItalic);
+      enabledMap.put("isUnderline", isUnderline);
+      enabledMap.put("isStrikethrough", isStrikethrough);
+      enabledMap.put("isSuperscript", isSuperscript);
+      enabledMap.put("isSubscript", isSubscript);
+      return enabledMap;
+    }
+
   }
 
   public enum Type {
