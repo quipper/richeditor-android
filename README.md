@@ -102,7 +102,7 @@ dependencies {
     implementation 'jp.wasabeef:richeditor-android:1.2.2'
     
     // or use (for kishan's edit, and upgrades listed on top of this readme file.)
-    implementation 'com.github.kishannareshpal:richeditor-android:1.3'
+    implementation 'com.github.kishannareshpal:richeditor-android:1.3.1'
     // don't forget to add jitpack repo by uncommenting the line above.  
 
 }
