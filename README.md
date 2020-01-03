@@ -11,10 +11,12 @@ RichEditor for Android
             e. Enjoy!
         
     - Migrated to AndroidX
-    
     - Upgrade of Android Gradle.
-    
-    - Using Github Packages
+    – Bumped up the minSdkVersion from 14 to 17, due to JavascriptInterfaces method.
+    – Implemented a different, more reliable, approach of passing data between WebView and JS. Before: Callback URL Scheme. Now: JavascriptInterfaces
+    – Removed OnDecorationStateListener as i found it unnecessary.
+    – Added OnTextSelectionChangeListener which contains two params, one is an object that has all of the information about what format type is enabled to the current Caret; And the second param is the actual selected text.
+    – Modified OnTextChangeListener, it now returns the html and the text.
 ```
 
 
@@ -100,8 +102,8 @@ dependencies {
     implementation 'jp.wasabeef:richeditor-android:1.2.2'
     
     // or use (for kishan's edit, and upgrades listed on top of this readme file.)
-    implementation 'com.github.kishannareshpal:richeditor-android:1.2.3'
-    // don't forget to add jitpack repo by uncommenting above.  
+    implementation 'com.github.kishannareshpal:richeditor-android:1.3'
+    // don't forget to add jitpack repo by uncommenting the line above.  
 
 }
 ```
