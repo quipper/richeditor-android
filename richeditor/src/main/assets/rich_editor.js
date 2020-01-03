@@ -24,11 +24,58 @@ RE.currentSelection = {
 
 RE.editor = document.getElementById('editor');
 
-document.addEventListener("selectionchange", function() { RE.backuprange(); });
+document.addEventListener("selectionchange", function() {
+    RE.backuprange();
+    RE.selectionChange();
+});
+
 
 // Initializations
-RE.callback = function() {
-    window.location.href = "re-callback://" + encodeURI(RE.getHtml());
+RE.textChange = function() {
+    Android.textChange(RE.getText(), RE.getHtml());
+}
+
+RE.selectionChange = function() {
+    // query all the commands for this range.
+    const isBold          = document.queryCommandState("bold");
+    const isItalic        = document.queryCommandState("italic");
+    const isUnderline     = document.queryCommandState("underline");
+    const isStrikethrough = document.queryCommandState("strikeThrough");
+
+    // For some reason queryCommandState is returning false for these two commands.
+    //    const isSubscript     = document.queryCommandState("subscript");
+    //    const isSuperscript   = document.queryCommandState("superscript");
+
+    // So instead, i am using these alternative.
+    let selection = window.getSelection();
+    var nodes = [];
+    let parentElement = selection.getRangeAt(0).startContainer.parentElement;
+    nodes.push(parentElement); // grab an array of all nodes of the curent selection
+    while(parentElement.parentNode) {
+        nodes.unshift(parentElement.parentNode);
+        parentElement = parentElement.parentNode;
+    }
+
+    const lowerCasedTagNamesOfNodes = nodes.map(function(el) {
+        let tagName = el.tagName;
+        if (tagName !== undefined) {
+            return tagName.toLowerCase()
+        }
+    })
+
+    const isSuperscript = lowerCasedTagNamesOfNodes.includes("sup");
+    const isSubscript   = lowerCasedTagNamesOfNodes.includes("sub")
+
+    const enabledFormatTypes = {
+        isBold:          isBold,
+        isItalic:        isItalic,
+        isUnderline:     isUnderline,
+        isStrikethrough: isStrikethrough,
+        isSuperscript:   isSuperscript,
+        isSubscript:     isSubscript
+    }
+    const querystring = encodeQueryData(enabledFormatTypes)
+    Android.selectionChange(querystring, RE.getText());
 }
 
 RE.setHtml = function(contents) {
@@ -201,7 +248,7 @@ RE.insertLink = function(url, title) {
        sel.removeAllRanges();
        sel.addRange(range);
    }
-    RE.callback();
+    RE.textChange();
 }
 
 RE.setTodo = function(text) {
@@ -302,7 +349,7 @@ RE.removeFormat = function() {
 }
 
 // Event Listeners
-RE.editor.addEventListener("input", RE.callback);
+RE.editor.addEventListener("input", RE.textChange);
 RE.editor.addEventListener("keyup", function(e) {
     var KEY_LEFT = 37, KEY_RIGHT = 39;
     if (e.which == KEY_LEFT || e.which == KEY_RIGHT) {
@@ -310,3 +357,14 @@ RE.editor.addEventListener("keyup", function(e) {
     }
 });
 RE.editor.addEventListener("click", RE.enabledEditingItems);
+
+
+/* Helper Function */
+// https://stackoverflow.com/questions/111529/how-to-create-query-parameters-in-javascript
+function encodeQueryData(data) {
+   const ret = [];
+   for (let d in data) {
+    ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+   }
+   return "?" + ret.join('&');
+}

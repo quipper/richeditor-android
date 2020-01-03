@@ -5,18 +5,24 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import org.w3c.dom.Text;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -38,6 +44,54 @@ import java.util.Locale;
 
 public class RichEditor extends WebView {
 
+  public class EnabledFormatTypes {
+    private boolean isBold;
+    private boolean isItalic;
+    private boolean isUnderline;
+    private boolean isStrikethrough;
+    private boolean isSuperscript;
+    private boolean isSubscript;
+
+    public EnabledFormatTypes(boolean isBold, boolean isItalic, boolean isUnderline, boolean isStrikethrough, boolean isSuperscript, boolean isSubscript) {
+      this.isBold = isBold;
+      this.isItalic = isItalic;
+      this.isUnderline = isUnderline;
+      this.isStrikethrough = isStrikethrough;
+      this.isSuperscript = isSuperscript;
+      this.isSubscript = isSubscript;
+    }
+
+    public boolean isBold() {
+      return isBold;
+    }
+    public boolean isItalic() {
+      return isItalic;
+    }
+    public boolean isUnderline() {
+      return isUnderline;
+    }
+    public boolean isStrikethrough() {
+      return isStrikethrough;
+    }
+    public boolean isSuperscript() {
+      return isSuperscript;
+    }
+    public boolean isSubscript() {
+      return isSubscript;
+    }
+
+    public HashMap<String, Boolean> getEnabledTypesOnly() {
+      HashMap<String, Boolean> enabledMap = new HashMap<>();
+      if (isBold)          enabledMap.put("isBold", isBold);
+      if (isItalic)        enabledMap.put("isItalic", isItalic);
+      if (isUnderline)     enabledMap.put("isUnderline", isUnderline);
+      if (isStrikethrough) enabledMap.put("isStrikethrough", isStrikethrough);
+      if (isSuperscript)   enabledMap.put("isSuperscript", isSuperscript);
+      if (isSubscript)     enabledMap.put("isSubscript", isSubscript);
+      return enabledMap;
+    }
+  }
+
   public enum Type {
     BOLD,
     ITALIC,
@@ -55,32 +109,55 @@ public class RichEditor extends WebView {
     UNORDEREDLIST,
     JUSTIFYCENTER,
     JUSTIFYFULL,
-    JUSTUFYLEFT,
+    JUSTIFYLEFT,
     JUSTIFYRIGHT
   }
 
   public interface OnTextChangeListener {
+    void onTextChange(String text, String html);
+  }
 
-    void onTextChange(String text);
+  public interface OnTextSelectionChangeListener {
+    void onTextSelect(EnabledFormatTypes enabledFormatTypes, String selectedText);
   }
 
   public interface OnDecorationStateListener {
-
     void onStateChangeListener(String text, List<Type> types);
   }
 
   public interface AfterInitialLoadListener {
-
     void onAfterInitialLoad(boolean isReady);
   }
 
+  public class JavascriptInterface {
+    private Context ctx;
+
+    /** Instantiate the interface and set the context */
+    JavascriptInterface(Context ctx) {
+      this.ctx = ctx;
+    }
+
+    /** Methods to be called from javascript page */
+    @android.webkit.JavascriptInterface
+    public void textChange(String text, String html) {
+      RichEditor.this.textChange(text, html);
+    }
+
+    @android.webkit.JavascriptInterface
+    public void selectionChange(String enabledFormatsAsQueryString, String selectedText) {
+      RichEditor.this.selectionChange(enabledFormatsAsQueryString, selectedText);
+    }
+
+
+  }
+
   private static final String SETUP_HTML = "file:///android_asset/editor.html";
-  private static final String CALLBACK_SCHEME = "re-callback://";
   private static final String STATE_SCHEME = "re-state://";
   private boolean isReady = false;
-  private String mContents;
+  private String text; // the text written in the editor
+  private String html; // the html equivalent of the text written in the editor
   private OnTextChangeListener mTextChangeListener;
-  private OnDecorationStateListener mDecorationStateListener;
+  private OnTextSelectionChangeListener mTextSelectionChangeListener;
   private AfterInitialLoadListener mLoadListener;
 
   public RichEditor(Context context) {
@@ -100,6 +177,7 @@ public class RichEditor extends WebView {
     getSettings().setJavaScriptEnabled(true);
     setWebChromeClient(new WebChromeClient());
     setWebViewClient(createWebviewClient());
+    addJavascriptInterface(new JavascriptInterface(context), "Android");
     loadUrl(SETUP_HTML);
     applyAttributes(context, attrs);
   }
@@ -112,32 +190,35 @@ public class RichEditor extends WebView {
     mTextChangeListener = listener;
   }
 
-  public void setOnDecorationChangeListener(OnDecorationStateListener listener) {
-    mDecorationStateListener = listener;
+  public void setOnTextSelectionChangeListener(OnTextSelectionChangeListener listener) {
+    mTextSelectionChangeListener = listener;
   }
 
   public void setOnInitialLoadListener(AfterInitialLoadListener listener) {
     mLoadListener = listener;
   }
 
-  private void callback(String text) {
-    mContents = text.replaceFirst(CALLBACK_SCHEME, "");
+  private void textChange(String text, String html) {
+    this.text = text;
+    this.html = html;
     if (mTextChangeListener != null) {
-      mTextChangeListener.onTextChange(mContents);
+      mTextChangeListener.onTextChange(text, html);
     }
   }
 
-  private void stateCheck(String text) {
-    String state = text.replaceFirst(STATE_SCHEME, "").toUpperCase(Locale.ENGLISH);
-    List<Type> types = new ArrayList<>();
-    for (Type type : Type.values()) {
-      if (TextUtils.indexOf(state, type.name()) != -1) {
-        types.add(type);
-      }
-    }
+  private void selectionChange(String queryStringWithEnabledFormats, String selectedText) {
+    Uri uri = Uri.parse(queryStringWithEnabledFormats); // parse the query string and retrieve its values
+    boolean isBold          = uri.getBooleanQueryParameter("isBold",          false);
+    boolean isItalic        = uri.getBooleanQueryParameter("isItalic",        false);
+    boolean isSubscript     = uri.getBooleanQueryParameter("isSubscript",     false);
+    boolean isUnderline     = uri.getBooleanQueryParameter("isUnderline",     false);
+    boolean isSuperscript   = uri.getBooleanQueryParameter("isSuperscript",   false);
+    boolean isStrikethrough = uri.getBooleanQueryParameter("isStrikethrough", false);
 
-    if (mDecorationStateListener != null) {
-      mDecorationStateListener.onStateChangeListener(state, types);
+    // create an object
+    EnabledFormatTypes eft = new EnabledFormatTypes(isBold, isItalic, isUnderline, isStrikethrough, isSuperscript, isSubscript);
+    if (mTextSelectionChangeListener != null) {
+      mTextSelectionChangeListener.onTextSelect(eft, selectedText);
     }
   }
 
@@ -185,11 +266,15 @@ public class RichEditor extends WebView {
     } catch (UnsupportedEncodingException e) {
       // No handling
     }
-    mContents = contents;
+    this.html = contents;
   }
 
   public String getHtml() {
-    return mContents;
+    return this.html;
+  }
+
+  public String getText() {
+    return this.text;
   }
 
   public void setEditorFontColor(int color) {
@@ -418,7 +503,8 @@ public class RichEditor extends WebView {
       }
     }
 
-    @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView view, String url) {
       String decode;
       try {
         decode = URLDecoder.decode(url, "UTF-8");
@@ -427,11 +513,7 @@ public class RichEditor extends WebView {
         return false;
       }
 
-      if (TextUtils.indexOf(url, CALLBACK_SCHEME) == 0) {
-        callback(decode);
-        return true;
-      } else if (TextUtils.indexOf(url, STATE_SCHEME) == 0) {
-        stateCheck(decode);
+      if (TextUtils.indexOf(url, STATE_SCHEME) == 0) {
         return true;
       }
 

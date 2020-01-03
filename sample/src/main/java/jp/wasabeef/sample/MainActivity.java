@@ -3,8 +3,13 @@ package jp.wasabeef.sample;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import java.util.List;
+
 import jp.wasabeef.richeditor.RichEditor;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,11 +33,19 @@ public class MainActivity extends AppCompatActivity {
     //mEditor.setInputEnabled(false);
 
     mPreview = (TextView) findViewById(R.id.preview);
-    mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
-      @Override public void onTextChange(String text) {
-        mPreview.setText(text);
+    mEditor.setOnTextSelectionChangeListener(new RichEditor.OnTextSelectionChangeListener() {
+      @Override
+      public void onTextSelect(RichEditor.EnabledFormatTypes enabledFormatTypes, String selectedText) {
+        Log.v("ENABLEDD", selectedText);
       }
     });
+
+//    mEditor.setOnTextSelectionChangeListener(new RichEditor.OnTextSelectionChangeListener() {
+//      @Override
+//      public void onTextSelect(RichEditor.EnabledFormatTypes enabledFormatTypes) {
+//        Log.v("ENABLEDD", enabledFormatTypes.getEnabledTypesOnly().toString());
+//      }
+//    });
 
     findViewById(R.id.action_undo).setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
