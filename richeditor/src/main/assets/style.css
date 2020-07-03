@@ -39,7 +39,7 @@ body {
   display: table-cell;
   outline: 0px solid transparent;
   background-repeat: no-repeat;
-  background,-position: center;
+  background-position: center;
   background-size: cover;
 
 }
@@ -47,4 +47,4 @@ body {
 #editor[placeholder]:empty:not(:focus):before {
   content: attr(placeholder);
   opacity: .5;
-}}
+}

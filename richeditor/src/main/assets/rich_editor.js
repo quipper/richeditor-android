@@ -20,7 +20,8 @@ RE.currentSelection = {
     "startContainer": 0,
     "startOffset": 0,
     "endContainer": 0,
-    "endOffset": 0};
+    "endOffset": 0
+};
 
 RE.editor = document.getElementById('editor');
 
@@ -83,15 +84,18 @@ RE.setHtml = function(contents) {
 }
 
 RE.getHtml = function() {
-    return RE.editor.innerHTML;
+    // removes unnecessary extra <br> tags on the beggining and end of the html string.
+    let trimmedHTML = RE.editor.innerHTML.replace(/^( |<br>)*(.*?)( |<br>)*$/, "$2");
+    return trimmedHTML;
 }
 
 RE.getText = function() {
-    return RE.editor.innerText;
+    // trim to remove space on start and end of the text
+    return RE.editor.innerText.trim();
 }
 
 RE.setBaseTextColor = function(color) {
-    RE.editor.style.color  = color;
+    RE.editor.style.color = color;
 }
 
 RE.setBaseFontSize = function(size) {

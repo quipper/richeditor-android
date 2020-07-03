@@ -166,6 +166,7 @@ public class RichEditor extends WebView {
   private static final String SETUP_HTML = "file:///android_asset/editor.html";
   private static final String STATE_SCHEME = "re-state://";
   private boolean isReady = false;
+  private int textSize = 14;
   private String text; // the text written in the editor
   private String html; // the html equivalent of the text written in the editor
   private OnTextChangeListener mTextChangeListener;
@@ -199,15 +200,19 @@ public class RichEditor extends WebView {
   }
 
   public void setOnTextChangeListener(OnTextChangeListener listener) {
-    mTextChangeListener = listener;
+    this.mTextChangeListener = listener;
+  }
+
+  public void setTextSize(int textSize) {
+    this.textSize = textSize;
   }
 
   public void setOnTextSelectionChangeListener(OnTextSelectionChangeListener listener) {
-    mTextSelectionChangeListener = listener;
+    this.mTextSelectionChangeListener = listener;
   }
 
   public void setOnInitialLoadListener(AfterInitialLoadListener listener) {
-    mLoadListener = listener;
+    this.mLoadListener = listener;
   }
 
   private void textChange(String text, String html) {
