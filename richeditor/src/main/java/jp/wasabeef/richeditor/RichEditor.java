@@ -49,14 +49,18 @@ public class RichEditor extends WebView {
     private boolean isItalic;
     private boolean isUnderline;
     private boolean isStrikethrough;
+    private boolean isUnorderedList;
+    private boolean isOrderedList;
     private boolean isSuperscript;
     private boolean isSubscript;
 
-    public EnabledFormatTypes(boolean isBold, boolean isItalic, boolean isUnderline, boolean isStrikethrough, boolean isSuperscript, boolean isSubscript) {
+    public EnabledFormatTypes(boolean isBold, boolean isItalic, boolean isUnderline, boolean isStrikethrough, boolean isUnorderedList, boolean isOrderedList, boolean isSuperscript, boolean isSubscript) {
       this.isBold = isBold;
       this.isItalic = isItalic;
       this.isUnderline = isUnderline;
       this.isStrikethrough = isStrikethrough;
+      this.isUnorderedList = isUnorderedList;
+      this.isOrderedList = isOrderedList;
       this.isSuperscript = isSuperscript;
       this.isSubscript = isSubscript;
     }
@@ -73,6 +77,8 @@ public class RichEditor extends WebView {
     public boolean isStrikethrough() {
       return isStrikethrough;
     }
+    public boolean isUnorderedList() { return isUnorderedList; }
+    public boolean isOrderedList() { return isOrderedList; }
     public boolean isSuperscript() {
       return isSuperscript;
     }
@@ -86,6 +92,8 @@ public class RichEditor extends WebView {
       if (isItalic)        enabledMap.put("isItalic", isItalic);
       if (isUnderline)     enabledMap.put("isUnderline", isUnderline);
       if (isStrikethrough) enabledMap.put("isStrikethrough", isStrikethrough);
+      if (isUnorderedList) enabledMap.put("isUnorderedList", isUnorderedList);
+      if (isOrderedList)   enabledMap.put("isOrderedList", isOrderedList);
       if (isSuperscript)   enabledMap.put("isSuperscript", isSuperscript);
       if (isSubscript)     enabledMap.put("isSubscript", isSubscript);
       return enabledMap;
@@ -97,6 +105,8 @@ public class RichEditor extends WebView {
       enabledMap.put("isItalic", isItalic);
       enabledMap.put("isUnderline", isUnderline);
       enabledMap.put("isStrikethrough", isStrikethrough);
+      enabledMap.put("isUnorderedList", isUnorderedList);
+      enabledMap.put("isOrderedList", isOrderedList);
       enabledMap.put("isSuperscript", isSuperscript);
       enabledMap.put("isSubscript", isSubscript);
       return enabledMap;
@@ -231,9 +241,11 @@ public class RichEditor extends WebView {
     boolean isUnderline     = uri.getBooleanQueryParameter("isUnderline",     false);
     boolean isSuperscript   = uri.getBooleanQueryParameter("isSuperscript",   false);
     boolean isStrikethrough = uri.getBooleanQueryParameter("isStrikethrough", false);
+    boolean isUnorderedList = uri.getBooleanQueryParameter("isUnorderedList", false);
+    boolean isOrderedList   = uri.getBooleanQueryParameter("isOrderedList",   false);
 
     // create an object
-    EnabledFormatTypes eft = new EnabledFormatTypes(isBold, isItalic, isUnderline, isStrikethrough, isSuperscript, isSubscript);
+    EnabledFormatTypes eft = new EnabledFormatTypes(isBold, isItalic, isUnderline, isStrikethrough, isUnorderedList, isOrderedList, isSuperscript, isSubscript);
     if (mTextSelectionChangeListener != null) {
       mTextSelectionChangeListener.onTextSelect(eft, selectedText);
     }

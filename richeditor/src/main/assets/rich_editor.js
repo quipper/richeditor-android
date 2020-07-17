@@ -42,6 +42,8 @@ RE.selectionChange = function() {
     const isItalic        = document.queryCommandState("italic");
     const isUnderline     = document.queryCommandState("underline");
     const isStrikethrough = document.queryCommandState("strikeThrough");
+    const isUnorderedList = document.queryCommandState("insertUnorderedList");
+    const isOrderedList   = document.queryCommandState("insertOrderedList");
 
     // For some reason queryCommandState is returning false for these two commands.
     //    const isSubscript     = document.queryCommandState("subscript");
@@ -73,7 +75,9 @@ RE.selectionChange = function() {
         isUnderline:     isUnderline,
         isStrikethrough: isStrikethrough,
         isSuperscript:   isSuperscript,
-        isSubscript:     isSubscript
+        isSubscript:     isSubscript,
+        isUnorderedList: isUnorderedList,
+        isOrderedList:   isOrderedList
     }
     const querystring = encodeQueryData(enabledFormatTypes)
     Android.selectionChange(querystring, RE.getText());
@@ -305,10 +309,10 @@ RE.enabledEditingItems = function(e) {
     if (document.queryCommandState('underline')) {
         items.push('underline');
     }
-    if (document.queryCommandState('insertOrderedList')) {
+    if (document.queryCommandState('orderedList')) {
         items.push('orderedList');
     }
-    if (document.queryCommandState('insertUnorderedList')) {
+    if (document.queryCommandState('unorderedList')) {
         items.push('unorderedList');
     }
     if (document.queryCommandState('justifyCenter')) {

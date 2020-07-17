@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
     mEditor.setOnTextSelectionChangeListener(new RichEditor.OnTextSelectionChangeListener() {
       @Override
       public void onTextSelect(RichEditor.EnabledFormatTypes enabledFormatTypes, String selectedText) {
-        Log.v("ENABLEDD", selectedText);
+        Log.v("dangdut", "selectedText = " + selectedText);
+        Log.v("dangdut", "activeFormat = " + enabledFormatTypes.getEnabledTypesOnly());
       }
     });
 
