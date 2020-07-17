@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="gunmetal">#4c5263</color>
+    <color name="grey">#8fb0d4</color>
+    <color name="greyplus1">#6b8fbc</color>
+    <color name="greyplus2">#1e3f6b</color>
+    <color name="greyplus3">#0c2846</color>
+    <color name="greymin1">#bed2e8</color>
+    <color name="greymin2">#e3ecf5</color>
+    <color name="greymin3">#f6f7fa</color>
+</resources>

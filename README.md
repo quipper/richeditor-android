@@ -1,5 +1,15 @@
 RichEditor for Android
 =============
+
+### Modifications made by @leo0263:  
+```  
+ - Add UnorderedList and OrderedList to OnTextSelectionChangeListener 
+ - Update the UI: 
+	 - Move the formatting toolbar so it doesn't blocked by the android text selection pop up
+     - Apply Open Sans Regular as the default font
+     - Attempt to add rounded box on the richEdit using FrameLayout (check the layout for details)
+```
+
 ### Modifications made by user @kishannareshpal:
 ```
     - Custom default font (jost.ttf) 

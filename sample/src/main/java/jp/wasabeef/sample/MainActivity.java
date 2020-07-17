@@ -21,13 +21,13 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     mEditor = (RichEditor) findViewById(R.id.editor);
-    mEditor.setEditorHeight(200);
-    mEditor.setEditorFontSize(22);
-    mEditor.setEditorFontColor(Color.RED);
-    //mEditor.setEditorBackgroundColor(Color.BLUE);
+    mEditor.setEditorHeight(40);
+    mEditor.setEditorFontSize(12);
+    mEditor.setEditorFontColor(R.color.greyplus2);
+    mEditor.setEditorBackgroundColor(0); //make it transparent instead (check layout)
     //mEditor.setBackgroundColor(Color.BLUE);
-    //mEditor.setBackgroundResource(R.drawable.bg);
-    mEditor.setPadding(10, 10, 10, 10);
+    //mEditor.setBackgroundResource(R.drawable.bg_input_chat); // can't do this, need bitmap??
+    //mEditor.setPadding(10, 10, 10, 10);
     //mEditor.setBackground("https://raw.githubusercontent.com/wasabeef/art/master/chip.jpg");
     mEditor.setPlaceholder("Insert text here...");
     //mEditor.setInputEnabled(false);
@@ -41,12 +41,12 @@ public class MainActivity extends AppCompatActivity {
       }
     });
 
-//    mEditor.setOnTextSelectionChangeListener(new RichEditor.OnTextSelectionChangeListener() {
-//      @Override
-//      public void onTextSelect(RichEditor.EnabledFormatTypes enabledFormatTypes) {
-//        Log.v("ENABLEDD", enabledFormatTypes.getEnabledTypesOnly().toString());
-//      }
-//    });
+    mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
+        @Override
+        public void onTextChange(String text, String html) {
+          mPreview.setText(html);
+        }
+    });
 
     findViewById(R.id.action_undo).setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
