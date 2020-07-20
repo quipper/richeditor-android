@@ -8,6 +8,7 @@ RichEditor for Android
      - Move the formatting toolbar so it doesn't blocked by the android text selection pop up
      - Apply Open Sans Regular as the default font
      - Attempt to add rounded box on the richEdit using FrameLayout (check the layout for details)
+ - Publish to [jitpack IO](https://jitpack.io/#quipper/richeditor-android)
 ```
 
 ### Modifications made by user @kishannareshpal:
