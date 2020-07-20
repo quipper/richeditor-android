@@ -17,6 +17,9 @@ buildscript {
     }
 }
 
+apply plugin: 'com.github.dcendents.android-maven'
+group='com.github.quipper'
+
 allprojects {
     repositories {
         jcenter()
