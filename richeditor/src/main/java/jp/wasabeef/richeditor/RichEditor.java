@@ -201,6 +201,7 @@ public class RichEditor extends WebView {
     setWebChromeClient(new WebChromeClient());
     setWebViewClient(createWebviewClient());
     addJavascriptInterface(new JavascriptInterface(context), "Android");
+    addJavascriptInterface(new ClipboardInterface(context), "Clipboard");
     loadUrl(SETUP_HTML);
     applyAttributes(context, attrs);
   }

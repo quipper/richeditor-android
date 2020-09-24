@@ -365,6 +365,11 @@ RE.editor.addEventListener("keyup", function(e) {
     }
 });
 RE.editor.addEventListener("click", RE.enabledEditingItems);
+RE.editor.addEventListener("paste", function(evt) {
+    evt.preventDefault();
+    var plain = Clipboard.getText();
+    RE.insertHTML(plain);
+});
 
 
 /* Helper Function */
