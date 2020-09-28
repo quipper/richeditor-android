@@ -1,14 +1,13 @@
 RichEditor for Android
 =============
 
-### Modifications made by @quipper:  
+### Modifications made by @quipper:  available on [jitpack IO](https://jitpack.io/#quipper/richeditor-android)
 ```  
  - Add UnorderedList and OrderedList to OnTextSelectionChangeListener 
  - Update the UI: 
      - Move the formatting toolbar so it doesn't blocked by the android text selection pop up
      - Apply Open Sans Regular as the default font
      - Attempt to add rounded box on the richEdit using FrameLayout (check the layout for details)
- - Publish to [jitpack IO](https://jitpack.io/#quipper/richeditor-android)
  - Support clipboard text insertion on paste event
  - Support Android 21 (fix crash when running on android 21)
 ```
